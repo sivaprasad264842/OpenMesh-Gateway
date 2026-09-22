@@ -1,4 +1,6 @@
-package main.java.io.openmesh.gateway.model;
+package io.openmesh.gateway.model;
+
+import lombok.Getter;
 
 @Getter
 public enum RateLimitTier {
@@ -11,7 +13,7 @@ public enum RateLimitTier {
     private final double replenishRate;
     private final double burstCapacity;
 
-    RateLimitingTier(double replenishRate, double burstCapacity){
+    RateLimitTier(double replenishRate, double burstCapacity){
         this.replenishRate = replenishRate;
         this.burstCapacity = burstCapacity;
 

@@ -1,4 +1,4 @@
-package main.java.io.openmesh.gateway.config;
+package io.openmesh.gateway.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Configuration
 @EnableWebFluxSecurity
+@RequiredArgsConstructor
 public class GatewaySecurityConfig {
     private final RSAPublicKey rsaPublicKey;
 
@@ -65,7 +66,7 @@ public class GatewaySecurityConfig {
     }
 
     @Bean
-    public converter<Jwt, Mono<AbstractAuthenticationToken>> jwtAuthenticationConverter() {
+    public Converter<Jwt, Mono<AbstractAuthenticationToken>> jwtAuthenticationConverter() {
         return new ReactiveJwtAuthenticationConverterAdapter(jwt -> {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
 
@@ -73,7 +74,7 @@ public class GatewaySecurityConfig {
             // Extract scopes
             Object scopeClaim = jwt.getClaims().get("scope");
             if (scopeClaim instanceof String scopeStr) {
-                Arrays.stream(scopesStr.split(" "))
+                Arrays.stream(scopeStr.split(" "))
                         .filter(s -> !s.isEmpty())
                         .map(s -> new SimpleGrantedAuthority("SCOPE_" + s))
                         .forEach(authorities::add);

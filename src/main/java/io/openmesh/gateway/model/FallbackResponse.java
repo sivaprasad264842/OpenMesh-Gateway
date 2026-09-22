@@ -1,4 +1,4 @@
-package main.java.io.openmesh.gateway.model;
+package io.openmesh.gateway.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NILL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FallbackResponse {
     @Builder.Default
     private String timestamp = Instant.now().toString();

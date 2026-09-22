@@ -1,5 +1,10 @@
-package main.java.io.openmesh.gateway.model;
+package io.openmesh.gateway.model;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

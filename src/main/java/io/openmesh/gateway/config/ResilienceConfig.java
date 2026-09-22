@@ -1,4 +1,4 @@
-package main.java.io.openmesh.gateway.config;
+package io.openmesh.gateway.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;

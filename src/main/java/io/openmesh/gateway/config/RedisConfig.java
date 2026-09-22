@@ -1,4 +1,4 @@
-package main.java.io.openmesh.gateway.config;
+package io.openmesh.gateway.config;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,11 +12,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import java.util.List;
 
 
 @Configuration
@@ -59,7 +61,7 @@ public class RedisConfig {
     @Bean
     public RedisScript<List> tokenBucketScript() {
         DefaultRedisScript<List> redisScript = new DefaultRedisScript<>();
-        RedisScript.setLocation(new ClassPathResource("scripts/token_bucket.lua"));
+        redisScript.setLocation(new ClassPathResource("scripts/token_bucket.lua"));
         redisScript.setResultType(List.class);
         return redisScript;
     }

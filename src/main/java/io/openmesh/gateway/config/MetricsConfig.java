@@ -1,6 +1,14 @@
-package main.java.io.openmesh.gateway.config;
+package io.openmesh.gateway.config;
 
-@Configuration
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.config.MeterFilter;
+import io.micrometer.core.instrument.config.MeterRegistryConfig;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.config.MeterFilter;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 public class MetricsConfig {
 
     @Bean
