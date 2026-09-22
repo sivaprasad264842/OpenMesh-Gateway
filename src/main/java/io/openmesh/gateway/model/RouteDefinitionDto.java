@@ -1,11 +1,18 @@
-package main.java.io.openmesh.gateway.model;
+package io.openmesh.gateway.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
+import org.springframework.cloud.gateway.route.RouteDefinition;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Data
 @Builder
@@ -36,7 +43,7 @@ public class RouteDefinitionDto {
         List<String> predicateTexts = new ArrayList<>();
 
         if (routeDefinition.getPredicates() != null) {
-            for (PrediateDefinition pred : routeDefinition.getPredicates()) {
+            for (PredicateDefinition pred : routeDefinition.getPredicates()) {
                 predicateTexts.add(formatPredicate(pred));
             }
         }
@@ -50,7 +57,7 @@ public class RouteDefinitionDto {
 
         return RouteDefinitionDto.builder()
                 .id(routeDefinition.getId())
-                .uri(routeDefinition.getUri() != nul ? routeDefinition.getUri().toString() : "")
+                .uri(routeDefinition.getUri() != null ? routeDefinition.getUri().toString() : "")
                 .predicates(predicateTexts)
                 .filters(filterTexts)
                 .order(routeDefinition.getOrder())
@@ -93,7 +100,7 @@ public class RouteDefinitionDto {
             return filter.getName() + "=" + String.join(",", filter.getArgs().values());
         }
         StringJoiner sj = new StringJoiner(",");
-        formatFilter(null).getArgs().forEach((k, v) -> sj.add(k + ":" + v));
+        filter.getArgs().forEach((k, v) -> sj.add(k + ":" + v));
         return filter.getName();
     }
 

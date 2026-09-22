@@ -1,8 +1,14 @@
-package main.java.io.openmesh.gateway.model;
+package io.openmesh.gateway.model;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Collections;
 import java.util.List;
+
 
 @Data
 @Builder
@@ -15,7 +21,7 @@ public class TenantContext {
     @Builder.Default
     private List<String> roles = Collections.emptyList();
     @Builder.Default
-    private List<String> scopes = Collection.emptyList();
+    private List<String> scopes = Collections.emptyList();
     private String tier;
     private String apiKey;
     private boolean authenticated;
