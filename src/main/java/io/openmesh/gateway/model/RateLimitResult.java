@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RateLimitResult {
     private boolean allowed;
-    private long remaining;
+    private long remainingTokens;
     private long waitOrResetSeconds;
     private String tenantId;
     private double replenishRate;
