@@ -60,7 +60,7 @@ public class RateLimitService {
 
                 return RateLimitResult.builder()
                         .allowed(allowedNum == 1L)
-                        .remaining(remaining)
+                        .remainingTokens(remaining)
                         .waitOrResetSeconds(waitOrReset)
                         .tenantId(tenantId)
                         .replenishRate(replenishRate)
@@ -74,7 +74,7 @@ public class RateLimitService {
 
                             return Mono.just(RateLimitResult.builder()
                                 .allowed(true)
-                                .remaining((long) burstCapacity)
+                                .remainingTokens((long) burstCapacity)
                                 .waitOrResetSeconds(0)
                                 .tenantId(tenantId)
                                 .replenishRate(replenishRate)

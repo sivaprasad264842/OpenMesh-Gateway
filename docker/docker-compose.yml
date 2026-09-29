@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  openmesh-gateway:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: openmesh-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DOWNSTREAM_ALPHA_URL=http://downstream-service-alpha:8081
+      - DOWNSTREAM_BETA_URL=http://downstream-service-beta:8082
+    depends_on:
+      redis:
+        condition: service_healthy
+      downstream-service-alpha:
+        condition: service_started
+      downstream-service-beta:
+        condition: service_started
+    networks:
+      - openmesh-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: openmesh-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - openmesh-net
+
+  downstream-service-alpha:
+    image: node:20-alpine
+    container_name: downstream-service-alpha
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    working_dir: /app
+    volumes:
+      - ./mock-downstream/alpha:/app
+    command: ["node", "server.js"]
+    networks:
+      - openmesh-net
+
+  downstream-service-beta:
+    image: node:20-alpine
+    container_name: downstream-service-beta
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    working_dir: /app
+    volumes:
+      - ./mock-downstream/beta:/app
+    command: ["node", "server.js"]
+    networks:
+      - openmesh-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: openmesh-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - openmesh-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: openmesh-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    networks:
+      - openmesh-net
+
+networks:
+  openmesh-net:
+    driver: bridge
