@@ -70,13 +70,13 @@ public class TenantRateLimiterGatewayFilterFactory
             int requestedTokens = config.getRequestedTokens() > 0 ? config.getRequestedTokens() : 1;
 
 
-            TenantContext tenantContext = exchange.getAttribute(ZeroTrustIdentifyFilter.TENANT_CONTEXT_ATTR);
+            TenantContext tenantContext = exchange.getAttribute(ZeroTrustIdentityFilter.TENANT_CONTEXT_ATTR);
             if(config.getTier() != null && !config.getTier().isBlank()){
                 RateLimitTier tier = RateLimitTier.fromString(config.getTier());
                 replenishRate = tier.getReplenishRate();
                 burstCapacity = tier.getBurstCapacity();
             }else if(tenantContext != null && tenantContext.getTier() != null){
-                RateLimitTier tier = RateLimitTier.fromString(config.getTier());
+                RateLimitTier tier = RateLimitTier.fromString(tenantContext.getTier());
                 replenishRate = tier.getReplenishRate();
                 burstCapacity = tier.getBurstCapacity();
             }
@@ -155,14 +155,14 @@ public class TenantRateLimiterGatewayFilterFactory
 
 
     private String resolveTenantId(ServerWebExchange exchange) {
-        TenantContext tenantContext = exchange.getAttribute(ZeroTrustIdentifyFilter.TENANT_CONTEXT_ATTR);
+        TenantContext tenantContext = exchange.getAttribute(ZeroTrustIdentityFilter.TENANT_CONTEXT_ATTR);
         if (tenantContext != null && tenantContext.getTenantId() != null
                 && !TenantContext.DEFAULT_TENANT_ID.equals(tenantContext.getTenantId())) {
             return tenantContext.getTenantId();
         }
 
         String tenantHeader = exchange.getRequest().getHeaders().getFirst("Tenant-ID");
-        if (tenantContext != null && !tenantHeader.isBlank()) {
+        if (tenantHeader != null && !tenantHeader.isBlank()) {
             return tenantHeader.trim();
         }
 

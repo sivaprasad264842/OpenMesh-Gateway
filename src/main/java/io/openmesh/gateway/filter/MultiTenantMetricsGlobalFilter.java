@@ -74,7 +74,7 @@ public class MultiTenantMetricsGlobalFilter implements GlobalFilter, Ordered {
                     HttpStatusCode statusCode = currentExchange.getResponse().getStatusCode();
                     int status = (statusCode != null) ? statusCode.value() : 500;
                     
-                    TenantContext tenantContext = currentExchange.getAttribute(ZeroTrustIdentifyFilter.TENANT_CONTEXT_ATTR);
+                    TenantContext tenantContext = currentExchange.getAttribute(ZeroTrustIdentityFilter.TENANT_CONTEXT_ATTR);
                     String tenantId = (tenantContext != null) ? tenantContext.getTenantId() : "anonymous";
 
                     Route route = currentExchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);

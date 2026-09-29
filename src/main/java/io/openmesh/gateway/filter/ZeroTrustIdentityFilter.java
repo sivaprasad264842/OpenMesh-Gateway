@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor 
-public class ZeroTrustIdentifyFilter implements GlobalFilter, Ordered {
+public class ZeroTrustIdentityFilter implements GlobalFilter, Ordered {
 
     public static final String TENANT_CONTEXT_ATTR = "openmesh.tenantContext";
     public static final String HEADER_USER_ID = "X-User-Id";

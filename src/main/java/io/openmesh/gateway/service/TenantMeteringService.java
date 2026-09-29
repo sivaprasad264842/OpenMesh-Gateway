@@ -21,7 +21,7 @@ public class TenantMeteringService {
 
     public void recordRequest(String tenantId, String routeId, String method, int statusCode, Duration duration) {
         String safeTenant = (tenantId != null && !tenantId.isBlank()) ? tenantId : "anonymous";
-        String safeRoute = (routeId != null && routeId.isBlank()) ? routeId : "unknown";
+        String safeRoute = (routeId != null && !routeId.isBlank()) ? routeId : "unknown";
         String statusCategory = (statusCode / 100) + "xx";
 
         //Increment tenant internal in-memory meter
